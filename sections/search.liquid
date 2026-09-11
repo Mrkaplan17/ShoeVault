@@ -10,7 +10,6 @@
 <form action="{{ routes.search_url }}" method="get" role="search">
   <input
     type="search"
-    size="50"
     name="q"
     value="{{ search.terms | escape }}"
     placeholder="{{ 'search.placeholder' | t }}"
@@ -53,7 +52,7 @@
 {% stylesheet %}
   .search-results {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 160px), 1fr));
   }
   .search-results .prev,
   .search-results .page,
@@ -64,7 +63,7 @@
 
 {% schema %}
 {
-  "name": "t:general.search",
+  "name": "Search",
   "settings": []
 }
 {% endschema %}

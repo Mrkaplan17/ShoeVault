@@ -7,6 +7,10 @@
     "sv_signal": "#FF4D2E",
     "type_primary_font": "archivo_n4",
     "background_color": "#FFFFFF",
-    "foreground_color": "#0E0E10"
+    "foreground_color": "#0E0E10",
+    "color_palette": {
+      "background": "#FFFFFF",
+      "foreground": "#0E0E10"
+    }
   }
 }

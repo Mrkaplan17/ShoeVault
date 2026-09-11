@@ -4,22 +4,83 @@
       <img
         src="{{ section.settings.logo | image_url: width: 360 }}"
         alt="{{ shop.name | escape }}"
-        width="{{ section.settings.logo.width }}"
-        height="{{ section.settings.logo.height }}"
+        width="180"
+        height="28"
       >
     {%- else -%}
       SOLE<span>VAULT</span>
     {%- endif -%}
   </a>
 
-  <nav class="sv-nav" aria-label="Main navigation">
+  <nav class="sv-nav" id="svNav" data-sv-nav aria-label="Main navigation">
     {%- for link in section.settings.menu.links -%}
-      <a href="{{ link.url }}" {% if link.active %}aria-current="page"{% endif %}>{{ link.title }}</a>
+      <div class="sv-nav-item{% if link.links.size > 0 %} has-children{% endif %}">
+        <div class="sv-nav-linkwrap">
+          <a
+            class="sv-nav-link"
+            href="{{ link.url }}"
+            {% if link.current %}
+              aria-current="page"
+            {% endif %}
+          >
+            {{ link.title }}
+          </a>
+          {%- if link.links.size > 0 -%}
+            <button
+              class="sv-nav-caret"
+              type="button"
+              data-sv-submenu-toggle
+              aria-expanded="false"
+              aria-label="{{ link.title | escape }} submenu"
+            >
+              {% render 'sv-icons', icon: 'chevron' %}
+            </button>
+          {%- endif -%}
+        </div>
+        {%- if link.links.size > 0 -%}
+          <ul class="sv-dropdown">
+            {%- for child in link.links -%}
+              <li class="sv-dropdown-item{% if child.links.size > 0 %} has-children{% endif %}">
+                <div class="sv-nav-linkwrap">
+                  <a href="{{ child.url }}">{{ child.title }}</a>
+                  {%- if child.links.size > 0 -%}
+                    <button
+                      class="sv-nav-caret"
+                      type="button"
+                      data-sv-submenu-toggle
+                      aria-expanded="false"
+                      aria-label="{{ child.title | escape }} submenu"
+                    >
+                      {% render 'sv-icons', icon: 'chevron' %}
+                    </button>
+                  {%- endif -%}
+                </div>
+                {%- if child.links.size > 0 -%}
+                  <ul class="sv-dropdown sv-dropdown-nested">
+                    {%- for grandchild in child.links -%}
+                      <li>
+                        <a href="{{ grandchild.url }}">{{ grandchild.title }}</a>
+                      </li>
+                    {%- endfor -%}
+                  </ul>
+                {%- endif -%}
+              </li>
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+      </div>
     {%- endfor -%}
   </nav>
 
   <div class="sv-utils">
-    <button class="sv-mobile-toggle" type="button" aria-label="Open menu">
+    <button
+      class="sv-mobile-toggle"
+      type="button"
+      data-sv-menu-toggle
+      aria-expanded="false"
+      aria-controls="svNav"
+      aria-label="Open menu"
+    >
       {% render 'sv-icons', icon: 'menu' %}
     </button>
 

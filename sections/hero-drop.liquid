@@ -36,8 +36,9 @@
       <img
         src="{{ section.settings.image | image_url: width: 1600 }}"
         alt="{{ section.settings.image.alt | default: section.settings.headline | escape }}"
-        width="{{ section.settings.image.width }}"
-        height="{{ section.settings.image.height }}"
+        width="800"
+        height="800"
+        sizes="(max-width: 989px) 100vw, 55vw"
       >
     {%- else -%}
       <svg viewBox="0 0 400 220" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">

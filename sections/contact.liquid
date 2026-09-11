@@ -1,0 +1,69 @@
+{% comment %}
+  Contact page section. Provides the `contact` section type expected by
+  templates/page.contact.json and the theme editor.
+{% endcomment %}
+
+<section class="sv-collection">
+  <div class="sv-collection-head">
+    <div>
+      <h2>{{ page.title | default: 'Contact' }}</h2>
+      {%- if page.content != blank -%}
+        <p>{{ page.content | strip_html | truncatewords: 40 }}</p>
+      {%- endif -%}
+    </div>
+  </div>
+
+  {%- form 'contact', class: 'sv-contact-form' -%}
+    {%- if form.posted_successfully? -%}
+      <p class="sv-contact-success">Thanks for contacting us. We'll get back to you as soon as possible.</p>
+    {%- endif -%}
+    {%- if form.errors -%}
+      <p class="sv-contact-error">{{ form.errors | default_errors }}</p>
+    {%- endif -%}
+
+    <label for="sv-contact-name">Name</label>
+    <input id="sv-contact-name" type="text" name="contact[name]" value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}">
+
+    <label for="sv-contact-email">Email</label>
+    <input id="sv-contact-email" type="email" name="contact[email]" required value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}">
+
+    <label for="sv-contact-message">Message</label>
+    <textarea id="sv-contact-message" name="contact[body]" rows="6" required>{% if form.body %}{{ form.body }}{% endif %}</textarea>
+
+    <button class="sv-btn sv-btn-primary" type="submit">Submit</button>
+  {%- endform -%}
+</section>
+
+{% stylesheet %}
+  .sv-contact-form {
+    display: grid;
+    gap: 10px;
+    max-width: 480px;
+    width: 100%;
+  }
+  .sv-contact-form input,
+  .sv-contact-form textarea {
+    width: 100%;
+    max-width: 100%;
+    border: 1px solid var(--sv-hairline, #e4e2dd);
+    border-radius: 8px;
+    padding: 12px;
+    font: inherit;
+  }
+  .sv-contact-success { font-weight: 600; }
+  .sv-contact-error { color: var(--sv-signal, #ff4d2e); }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Contact",
+  "tag": "section",
+  "class": "sv-contact-section",
+  "settings": [],
+  "presets": [
+    {
+      "name": "Contact"
+    }
+  ]
+}
+{% endschema %}

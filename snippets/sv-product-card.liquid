@@ -1,3 +1,24 @@
+{%- if placeholder -%}
+  {%- liquid
+    assign placeholder_index = placeholder_index | default: 1
+    assign svg_n = placeholder_index | minus: 1 | modulo: 6 | plus: 1
+    assign svg_key = 'product-' | append: svg_n
+    assign fallback_titles = 'Vault Runner 01,Ridge Trainer,Aero Court Low,Fieldwalk Mid,Slate Slip-On,Vault Runner 02,Court Slip,Night Runner' | split: ','
+    assign title_index = placeholder_index | minus: 1
+    assign fallback_title = fallback_titles[title_index] | default: 'Vault Runner 01'
+    assign fallback_price = placeholder_price | default: '₱850'
+  -%}
+  <article class="sv-card sv-card--placeholder" aria-hidden="true">
+    <div class="sv-card-media">
+      {{ svg_key | placeholder_svg_tag: 'sv-placeholder-svg' }}
+    </div>
+    <div class="sv-card-body">
+      <h3>{{ fallback_title }}</h3>
+      <p class="sv-card-tag">Onboarding sample</p>
+      <p class="sv-card-price">{{ fallback_price }}</p>
+    </div>
+  </article>
+{%- else -%}
 {%- liquid
   assign variant = product.selected_or_first_available_variant
   assign threshold = low_stock_threshold | default: 6
@@ -103,3 +124,4 @@
     <p class="sv-card-price">{{ product.price | money }}</p>
   </div>
 </article>
+{%- endif -%}

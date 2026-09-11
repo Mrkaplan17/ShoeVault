@@ -1,47 +1,59 @@
 {% comment %}
-  This section is used in the collection template to render collection page
-  listing all products within a collection.
-
-  https://shopify.dev/docs/storefronts/themes/architecture/templates/collection
+  Collection page product grid with onboarding placeholders when empty.
 {% endcomment %}
 
-<h1>{{ collection.title }}</h1>
+{%- liquid
+  assign placeholder_count = 8
+  assign show_real_products = false
+  if collection != blank and collection.products_count > 0
+    assign show_real_products = true
+  endif
+-%}
 
-<div class="collection-products">
-  {% paginate collection.products by 20 %}
-    {% for product in collection.products %}
-      <div class="collection-product">
-        {% if product.featured_image %}
-          {% render 'image',
-            class: 'collection-product__image',
-            image: product.featured_image,
-            url: product.url,
-            width: 400,
-            height: 400,
-            crop: 'center'
-          %}
-        {% endif %}
-        <div class="collection-product__content">
-          <p>{{ product.title | escape | link_to: product.url }}</p>
-          <p>{{ product.price | money }}</p>
-        </div>
-      </div>
-    {% endfor %}
+<section class="sv-collection">
+  <div class="sv-collection-head">
+    <div>
+      <h2>{{ collection.title | default: 'Collection' }}</h2>
+      {%- if collection.description != blank -%}
+        <p>{{ collection.description | strip_html | truncatewords: 24 }}</p>
+      {%- endif -%}
+    </div>
+  </div>
 
-    {{ paginate | default_pagination }}
-  {% endpaginate %}
-</div>
+  <div class="sv-product-grid">
+    {%- if show_real_products -%}
+      {% paginate collection.products by 24 %}
+        {%- for product in collection.products -%}
+          {% render 'sv-product-card', product: product, low_stock_threshold: 6 %}
+        {%- endfor -%}
+        {%- if paginate.pages > 1 -%}
+          <div class="sv-collection-pagination">
+            {{ paginate | default_pagination }}
+          </div>
+        {%- endif -%}
+      {% endpaginate %}
+    {%- else -%}
+      {%- for i in (1..placeholder_count) -%}
+        {% render 'sv-product-card', placeholder: true, placeholder_index: forloop.index, placeholder_price: '₱850' %}
+      {%- endfor -%}
+    {%- endif -%}
+  </div>
+</section>
 
 {% stylesheet %}
-  .collection-products {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
+  .sv-collection-pagination {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    padding-top: 12px;
   }
 {% endstylesheet %}
 
 {% schema %}
 {
-  "name": "t:general.collection",
+  "name": "Collection",
   "settings": []
 }
 {% endschema %}

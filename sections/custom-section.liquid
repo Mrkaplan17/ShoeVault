@@ -15,6 +15,17 @@
     position: relative;
     overflow: hidden;
     width: 100%;
+    max-width: 100%;
+  }
+  @media (max-width: 768px) {
+    .custom-section__content {
+      display: block;
+      padding: 16px;
+    }
+    .custom-section__content > * {
+      grid-column: auto;
+      max-width: 100%;
+    }
   }
   .custom-section__background {
     position: absolute;
@@ -42,18 +53,18 @@
 
 {% schema %}
 {
-  "name": "t:general.custom_section",
+  "name": "Custom section",
   "blocks": [{ "type": "@theme" }],
   "settings": [
     {
       "type": "image_picker",
       "id": "background_image",
-      "label": "t:labels.background"
+      "label": "Background"
     }
   ],
   "presets": [
     {
-      "name": "t:general.custom_section"
+      "name": "Custom section"
     }
   ]
 }

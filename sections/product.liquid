@@ -41,9 +41,29 @@
   {% endform %}
 </div>
 
+{% stylesheet %}
+  .product-images,
+  .product-info,
+  .product-form {
+    max-width: 100%;
+    min-width: 0;
+    padding: 16px;
+  }
+  .product-form select,
+  .product-form input {
+    max-width: 100%;
+  }
+  @media (max-width: 768px) {
+    .product-info h1 {
+      font-size: clamp(1.4rem, 6vw, 2rem);
+      overflow-wrap: anywhere;
+    }
+  }
+{% endstylesheet %}
+
 {% schema %}
 {
-  "name": "t:general.product",
+  "name": "Product",
   "settings": [],
   "disabled_on": {
     "groups": ["header", "footer"]

@@ -55,22 +55,22 @@
 
 {% schema %}
 {
-  "name": "t:general.collections_grid",
+  "name": "Collections grid",
   "settings": [
     {
       "type": "select",
       "id": "grid_item_width",
-      "label": "t:labels.grid_item_width",
+      "label": "Grid item width",
       "options": [
-        { "value": "collections--compact", "label": "t:options.size.small" },
-        { "value": "collections--full", "label": "t:options.size.large" }
+        { "value": "collections--compact", "label": "Small" },
+        { "value": "collections--full", "label": "Large" }
       ],
       "default": "collections--full"
     },
     {
       "type": "range",
       "id": "grid_gap",
-      "label": "t:labels.grid_gap",
+      "label": "Grid spacing",
       "min": 0,
       "max": 50,
       "step": 5,
@@ -78,6 +78,6 @@
       "default": 10
     }
   ],
-  "presets": [{ "name": "t:general.collections_grid" }]
+  "presets": [{ "name": "Collections grid" }]
 }
 {% endschema %}

@@ -8,17 +8,17 @@
     "theme_support_url": "https://support.shopify.com/"
   },
   {
-    "name": "t:general.typography",
+    "name": "Typography",
     "settings": [
       {
         "type": "header",
-        "content": "t:general.fonts"
+        "content": "Fonts"
       },
       {
         "type": "font_picker",
         "id": "type_primary_font",
         "default": "archivo_n4",
-        "label": "t:general.primary"
+        "label": "Primary"
       }
     ]
   },
@@ -33,20 +33,20 @@
     ]
   },
   {
-    "name": "t:general.layout",
+    "name": "Layout",
     "settings": [
       {
         "type": "select",
         "id": "max_page_width",
-        "label": "t:labels.page_width",
+        "label": "Page width",
         "options": [
           {
             "value": "90rem",
-            "label": "t:options.page_width.narrow"
+            "label": "Narrow"
           },
           {
             "value": "110rem",
-            "label": "t:options.page_width.wide"
+            "label": "Wide"
           }
         ],
         "default": "90rem"
@@ -58,25 +58,25 @@
         "max": 100,
         "step": 1,
         "unit": "px",
-        "label": "t:labels.page_margin",
+        "label": "Page margin",
         "default": 20
       }
     ]
   },
   {
-    "name": "t:general.colors",
+    "name": "Colors",
     "settings": [
       {
         "type": "color",
         "id": "background_color",
         "default": "#FFFFFF",
-        "label": "t:labels.background"
+        "label": "Background"
       },
       {
         "type": "color",
         "id": "foreground_color",
         "default": "#333333",
-        "label": "t:labels.foreground"
+        "label": "Foreground"
       },
       {
         "type": "range",
@@ -85,8 +85,36 @@
         "max": 10,
         "step": 1,
         "unit": "px",
-        "label": "t:labels.input_corner_radius",
+        "label": "Input corner radius",
         "default": 4
+      }
+    ]
+  },
+  {
+    "name": "Color palette",
+    "settings": [
+      {
+        "type": "color_palette",
+        "id": "color_palette",
+        "default": {
+          "background": "#FFFFFF",
+          "foreground": "#0E0E10"
+        }
+      }
+    ]
+  },
+  {
+    "name": "Logo and favicon",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "logo",
+        "label": "Logo"
+      },
+      {
+        "type": "image_picker",
+        "id": "logo_inverse",
+        "label": "Inverse logo"
       }
     ]
   }

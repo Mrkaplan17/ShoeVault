@@ -1,4 +1,4 @@
-<section class="sv-collection" id="shop">
+<section class="sv-collection">
   {%- liquid
     assign selected_collection = section.settings.collection
     assign show_real_products = false
@@ -23,7 +23,7 @@
     {%- endif -%}
   </div>
 
-  <div class="sv-product-grid" id="svProductGrid">
+  <div class="sv-product-grid">
     {%- if show_real_products -%}
       {%- for product in selected_collection.products limit: section.settings.product_count -%}
         {% render 'sv-product-card', product: product, low_stock_threshold: section.settings.low_stock_threshold %}
@@ -38,7 +38,7 @@
 
 {% schema %}
 {
-  "name": "Featured collection",
+  "name": "Vault collection",
   "tag": "section",
   "class": "sv-collection-section",
   "settings": [
@@ -87,7 +87,7 @@
   ],
   "presets": [
     {
-      "name": "Featured collection"
+      "name": "Vault collection"
     }
   ]
 }

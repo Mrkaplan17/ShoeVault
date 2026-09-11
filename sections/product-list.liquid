@@ -402,7 +402,7 @@
           },
           "blocks": {
             "product_list_text": {
-              "type": "_product-list-text",
+              "type": "text",
               "name": "t:names.collection_title",
               "settings": {
                 "text": "<h3>{{ closest.collection.title }}</h3>",
@@ -423,10 +423,11 @@
               }
             },
             "product_list_button": {
-              "type": "_product-list-button",
+              "type": "button",
               "name": "t:names.product_list_button",
               "settings": {
                 "label": "t:text_defaults.view_all_button_label",
+                "link": "shopify://collections/all",
                 "open_in_new_tab": false,
                 "style_class": "button-unstyled",
                 "width": "fit-content",
