@@ -1,0 +1,8 @@
+<div class="sv-drawer-overlay" data-sv-overlay></div>
+<aside class="sv-drawer" data-sv-drawer data-shipping-threshold="{{ threshold | default: 1200 }}" data-currency="{{ shop.currency }}" aria-label="Shopping cart">
+  <div class="sv-drawer-head"><h2>Your Bag <span data-sv-drawer-count>({{ cart.item_count }})</span></h2><button class="sv-drawer-close" type="button" data-sv-cart-close aria-label="Close cart">{% render 'sv-icons', icon: 'close' %}</button></div>
+  <div class="sv-ship-progress"><div class="sv-ship-msg" data-sv-ship-message></div><div class="sv-ship-track"><div class="sv-ship-fill" data-sv-ship-fill></div></div></div>
+  <div class="sv-drawer-items" data-sv-items></div>
+  <template data-sv-empty-template><div class="sv-drawer-empty"><p>Your bag is empty</p><a href="{{ routes.all_products_collection_url }}">Continue shopping</a></div></template>
+  <div class="sv-drawer-foot"><div class="sv-subtotal-row"><span class="sv-label">Subtotal</span><span class="sv-amount" data-sv-subtotal>{{ cart.total_price | money }}</span></div><a class="sv-checkout-btn" href="{{ routes.checkout_url }}">Proceed to Checkout</a></div>
+</aside>

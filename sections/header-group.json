@@ -11,12 +11,17 @@
   "type": "header",
   "name": "t:general.header",
   "sections": {
+    "announcement": {
+      "type": "announcement-bar-sv",
+      "settings": {}
+    },
     "header": {
-      "type": "header",
+      "type": "solevault-header",
       "settings": {}
     }
   },
   "order": [
+    "announcement",
     "header"
-  ],
+  ]
 }

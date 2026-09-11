@@ -1,0 +1,2 @@
+{% if section.settings.show_announcement %}<div class="sv-announce"><span>{{ section.settings.message }}</span><button class="sv-announce-close" type="button" data-sv-announcement-close aria-label="Dismiss announcement">&times;</button></div>{% endif %}
+{% schema %}{"name":"SoleVault announcement","settings":[{"type":"checkbox","id":"show_announcement","label":"Show announcement","default":true},{"type":"richtext","id":"message","label":"Message","default":"<p>Free Express Shipping on orders over <strong>₱1,200</strong> - new drops every Friday</p>"}]}{% endschema %}

@@ -17,9 +17,19 @@
       {
         "type": "font_picker",
         "id": "type_primary_font",
-        "default": "work_sans_n4",
+        "default": "archivo_n4",
         "label": "t:general.primary"
       }
+    ]
+  },
+  {
+    "name": "SoleVault colors",
+    "settings": [
+      { "type": "color", "id": "sv_ink", "label": "Ink", "default": "#0E0E10" },
+      { "type": "color", "id": "sv_fog", "label": "Fog", "default": "#F5F4F2" },
+      { "type": "color", "id": "sv_hairline", "label": "Hairline", "default": "#E4E2DD" },
+      { "type": "color", "id": "sv_slate", "label": "Slate", "default": "#8A8782" },
+      { "type": "color", "id": "sv_signal", "label": "Signal", "default": "#FF4D2E" }
     ]
   },
   {

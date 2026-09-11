@@ -9,12 +9,13 @@
  */
 {
   "sections": {
-    "main": {
-      "type": "hello-world",
-      "settings": {}
-    }
+    "hero": { "type": "hero-drop", "blocks": { "stat-1": { "type": "stat", "settings": { "number": "40+", "label": "New styles this drop" } }, "stat-2": { "type": "stat", "settings": { "number": "24h", "label": "Express delivery" } }, "stat-3": { "type": "stat", "settings": { "number": "100%", "label": "Authenticity guaranteed" } } }, "block_order": ["stat-1", "stat-2", "stat-3"] },
+    "trust": { "type": "trust-badges" },
+    "collection": { "type": "featured-collection" },
+    "spotlight": { "type": "brand-spotlight" },
+    "reviews": { "type": "reviews-slider" }
   },
   "order": [
-    "main"
+    "hero", "trust", "collection", "spotlight", "reviews"
   ]
 }

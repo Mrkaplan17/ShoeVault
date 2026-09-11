@@ -3,6 +3,15 @@
   <head>
     {% # Inlined CSS Variables %}
     {% render 'css-variables' %}
+    {% style %}
+      :root {
+        --sv-ink: {{ settings.sv_ink }};
+        --sv-fog: {{ settings.sv_fog }};
+        --sv-hairline: {{ settings.sv_hairline }};
+        --sv-slate: {{ settings.sv_slate }};
+        --sv-signal: {{ settings.sv_signal }};
+      }
+    {% endstyle %}
 
     {% comment %}
       Font preloading:
@@ -19,6 +28,7 @@
 
     {% # Load and preload the critical CSS %}
     {{ 'critical.css' | asset_url | stylesheet_tag: preload: true }}
+    {{ 'theme.css' | asset_url | stylesheet_tag }}
 
     {% # Social, title, etc. %}
     {% render 'meta-tags' %}
