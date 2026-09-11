@@ -1,2 +1,166 @@
-<section class="sv-reviews"><div class="sv-reviews-head"><div><h2>{{ section.settings.heading }}</h2><div class="sv-reviews-summary"><span class="sv-stars">{% for i in (1..5) %}★{% endfor %}</span><p><strong>{{ section.settings.rating }}</strong> from {{ section.settings.buyer_count }} verified buyers</p></div></div></div><div class="sv-reviews-track">{% for block in section.blocks %}<article class="sv-review-card" {{ block.shopify_attributes }}><span class="sv-review-quote-mark">&rdquo;</span><div class="sv-stars">{% for i in (1..5) %}{% if i <= block.settings.rating %}★{% endif %}{% endfor %}</div><div class="sv-review-text">{{ block.settings.quote }}</div><div class="sv-review-author"><div class="sv-review-avatar">{{ block.settings.author_name | slice: 0 }} </div><div class="sv-review-author-info"><h4>{{ block.settings.author_name }}</h4><p>{{ block.settings.author_location }}</p></div></div></article>{% endfor %}</div></section>
-{% schema %}{"name":"SoleVault reviews","blocks":[{"type":"review","name":"Review","settings":[{"type":"range","id":"rating","label":"Rating","min":1,"max":5,"step":1,"default":5},{"type":"richtext","id":"quote","label":"Quote","default":"<p>The VaultFoam still feels like day one. My knees noticed the difference immediately.</p>"},{"type":"text","id":"author_name","label":"Author","default":"Jamie M."},{"type":"text","id":"author_location","label":"Location","default":"Verified buyer, Manila"}]}],"settings":[{"type":"text","id":"heading","label":"Heading","default":"What runners are saying"},{"type":"text","id":"rating","label":"Aggregate rating","default":"4.8"},{"type":"text","id":"buyer_count","label":"Buyer count","default":"2,300+"}],"presets":[{"name":"SoleVault reviews","blocks":[{"type":"review"},{"type":"review","settings":{"author_name":"Renz C.","author_location":"Verified buyer, Naga City"}},{"type":"review","settings":{"author_name":"Dana P.","author_location":"Verified buyer, Cebu City"}}]}]}{% endschema %}
+<section class="sv-reviews">
+  <div class="sv-reviews-head">
+    <div>
+      <h2>{{ section.settings.heading }}</h2>
+      <div class="sv-reviews-summary">
+        {% render 'sv-stars', rating: section.settings.summary_stars %}
+        <p><strong>{{ section.settings.rating }}</strong> from {{ section.settings.buyer_count }} verified buyers</p>
+      </div>
+    </div>
+    <div class="sv-reviews-nav">
+      <button class="sv-reviews-arrow" id="svReviewPrev" type="button" data-sv-review-prev aria-label="Previous reviews">
+        {% render 'sv-icons', icon: 'arrow-left' %}
+      </button>
+      <button class="sv-reviews-arrow" id="svReviewNext" type="button" data-sv-review-next aria-label="Next reviews">
+        {% render 'sv-icons', icon: 'arrow-right' %}
+      </button>
+    </div>
+  </div>
+
+  <div class="sv-reviews-track" id="svReviewsTrack" data-sv-reviews-track>
+    {%- for block in section.blocks -%}
+      {%- assign initials = block.settings.author_name | split: ' ' -%}
+      {%- capture avatar -%}
+        {%- for part in initials limit: 2 -%}{{ part | slice: 0 }}{%- endfor -%}
+      {%- endcapture -%}
+      <div class="sv-review-card" {{ block.shopify_attributes }}>
+        <span class="sv-review-quote-mark">&rdquo;</span>
+        {% render 'sv-stars', rating: block.settings.rating %}
+        <div class="sv-review-text">{{ block.settings.quote }}</div>
+        <div class="sv-review-author">
+          <div class="sv-review-avatar">{{ avatar | upcase }}</div>
+          <div class="sv-review-author-info">
+            <h4>{{ block.settings.author_name }}</h4>
+            <p>{{ block.settings.author_location }}</p>
+          </div>
+        </div>
+      </div>
+    {%- endfor -%}
+  </div>
+
+  <div class="sv-reviews-dots" id="svReviewsDots" data-sv-reviews-dots></div>
+</section>
+
+{% schema %}
+{
+  "name": "Reviews slider",
+  "tag": "section",
+  "class": "sv-reviews-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "What runners are saying"
+    },
+    {
+      "type": "text",
+      "id": "rating",
+      "label": "Aggregate rating",
+      "default": "4.8"
+    },
+    {
+      "type": "range",
+      "id": "summary_stars",
+      "label": "Summary star display",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "default": 5
+    },
+    {
+      "type": "text",
+      "id": "buyer_count",
+      "label": "Buyer count label",
+      "default": "2,300+"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Review",
+      "settings": [
+        {
+          "type": "range",
+          "id": "rating",
+          "label": "Rating",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "default": 5
+        },
+        {
+          "type": "richtext",
+          "id": "quote",
+          "label": "Quote",
+          "default": "<p>Three months in and the VaultFoam still feels like day one. My knees noticed the difference on longer runs almost immediately.</p>"
+        },
+        {
+          "type": "text",
+          "id": "author_name",
+          "label": "Author name",
+          "default": "Jamie M."
+        },
+        {
+          "type": "text",
+          "id": "author_location",
+          "label": "Author location",
+          "default": "Verified buyer, Quezon City"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Reviews slider",
+      "blocks": [
+        {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "quote": "<p>Three months in and the VaultFoam still feels like day one. My knees noticed the difference on longer runs almost immediately.</p>",
+            "author_name": "Jamie M.",
+            "author_location": "Verified buyer, Quezon City"
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "quote": "<p>Ordered the Ridge Trainer on a Tuesday night, wore them Wednesday morning. The express shipping claim actually held up.</p>",
+            "author_name": "Renz C.",
+            "author_location": "Verified buyer, Naga City"
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "rating": 4,
+            "quote": "<p>Sizing runs slightly narrow on the Aero Court, went up half a size and it's been perfect since. Would've liked a wide option.</p>",
+            "author_name": "Dana P.",
+            "author_location": "Verified buyer, Cebu City"
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "quote": "<p>The return process for a wrong size took under five minutes and the refund landed two days later. Rare for a smaller shop.</p>",
+            "author_name": "Kevin T.",
+            "author_location": "Verified buyer, Davao City"
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "quote": "<p>Been buying sneakers online for a decade and this is the first slide-out cart that's actually made me spend more time browsing.</p>",
+            "author_name": "Alex L.",
+            "author_location": "Verified buyer, Baguio City"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

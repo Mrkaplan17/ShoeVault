@@ -1,2 +1,178 @@
-<footer class="sv-footer"><div class="sv-footer-top"><div class="sv-footer-brand"><div class="sv-logo">SOLE<span>VAULT</span></div><p>{{ section.settings.tagline }}</p></div><div class="sv-footer-col"><h4>{{ section.settings.shop_heading }}</h4><ul>{% for link in section.settings.shop_menu.links %}<li><a href="{{ link.url }}">{{ link.title }}</a></li>{% endfor %}</ul></div><div class="sv-footer-col"><h4>{{ section.settings.company_heading }}</h4><ul>{% for link in section.settings.company_menu.links %}<li><a href="{{ link.url }}">{{ link.title }}</a></li>{% endfor %}</ul></div><div class="sv-footer-newsletter"><h4>{{ section.settings.newsletter_heading }}</h4><p>{{ section.settings.newsletter_text }}</p>{% form 'customer', id: 'newsletter-form', class: 'sv-newsletter-form' %}<input type="hidden" name="contact[tags]" value="newsletter"><input type="email" name="contact[email]" placeholder="Your email address" required aria-label="Email address"><button type="submit" aria-label="Subscribe">&rarr;</button>{% endform %}</div></div><div class="sv-footer-bottom"><p>&copy; {{ 'now' | date: '%Y' }} {{ shop.name }}. All rights reserved.</p><div class="sv-footer-social">{% for block in section.blocks %}{% if block.settings.url != blank %}<a href="{{ block.settings.url }}" aria-label="{{ block.settings.platform }}" {{ block.shopify_attributes }}>{{ block.settings.platform }}</a>{% endif %}{% endfor %}</div></div></footer>
-{% schema %}{"name":"SoleVault footer","blocks":[{"type":"social_link","name":"Social link","settings":[{"type":"select","id":"platform","label":"Platform","options":[{"value":"Instagram","label":"Instagram"},{"value":"X","label":"X"},{"value":"TikTok","label":"TikTok"},{"value":"Facebook","label":"Facebook"},{"value":"YouTube","label":"YouTube"}]},{"type":"url","id":"url","label":"URL"}]}],"settings":[{"type":"text","id":"tagline","label":"Tagline","default":"Footwear built for people who move. Designed in-house, shipped from Manila, worn everywhere."},{"type":"text","id":"shop_heading","label":"Shop heading","default":"Shop"},{"type":"link_list","id":"shop_menu","label":"Shop menu"},{"type":"text","id":"company_heading","label":"Company heading","default":"Company"},{"type":"link_list","id":"company_menu","label":"Company menu"},{"type":"text","id":"newsletter_heading","label":"Newsletter heading","default":"Stay in the loop"},{"type":"text","id":"newsletter_text","label":"Newsletter text","default":"New drops and restocks, straight to your inbox. No spam."}],"presets":[{"name":"SoleVault footer","blocks":[{"type":"social_link","settings":{"platform":"Instagram"}},{"type":"social_link","settings":{"platform":"X"}},{"type":"social_link","settings":{"platform":"TikTok"}}]}]}{% endschema %}
+<footer class="sv-footer">
+  <div class="sv-footer-top">
+    <div class="sv-footer-brand">
+      <div class="sv-logo">
+        {%- if section.settings.logo != blank -%}
+          <img
+            src="{{ section.settings.logo | image_url: width: 360 }}"
+            alt="{{ shop.name | escape }}"
+            width="{{ section.settings.logo.width }}"
+            height="{{ section.settings.logo.height }}"
+          >
+        {%- else -%}
+          SOLE<span>VAULT</span>
+        {%- endif -%}
+      </div>
+      <p>{{ section.settings.tagline }}</p>
+    </div>
+
+    <div class="sv-footer-col">
+      <h4>{{ section.settings.shop_heading }}</h4>
+      <ul>
+        {%- for link in section.settings.shop_menu.links -%}
+          <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+        {%- endfor -%}
+      </ul>
+    </div>
+
+    <div class="sv-footer-col">
+      <h4>{{ section.settings.company_heading }}</h4>
+      <ul>
+        {%- for link in section.settings.company_menu.links -%}
+          <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+        {%- endfor -%}
+      </ul>
+    </div>
+
+    <div class="sv-footer-newsletter">
+      <h4>{{ section.settings.newsletter_heading }}</h4>
+      <p>{{ section.settings.newsletter_text }}</p>
+      {% form 'customer', id: 'newsletter-form' %}
+        <div class="sv-newsletter-form">
+          <input type="hidden" name="contact[tags]" value="newsletter">
+          <input
+            type="email"
+            name="contact[email]"
+            placeholder="Your email address"
+            required
+            aria-label="Email address"
+          >
+          <button type="submit" aria-label="Subscribe">
+            {% render 'sv-icons', icon: 'arrow' %}
+          </button>
+        </div>
+        <p class="sv-newsletter-note{% if form.posted_successfully? %} is-confirmed{% endif %}" id="svNewsletterNote">
+          {%- if form.posted_successfully? -%}
+            You're on the list — check your inbox.
+          {%- elsif form.errors -%}
+            {{ form.errors | default_errors }}
+          {%- else -%}
+            Unsubscribe anytime.
+          {%- endif -%}
+        </p>
+      {% endform %}
+    </div>
+  </div>
+
+  <div class="sv-footer-bottom">
+    <p>&copy; {{ 'now' | date: '%Y' }} {{ shop.name }}. All rights reserved.</p>
+    <div class="sv-footer-legal">
+      {%- for link in section.settings.legal_menu.links -%}
+        <a href="{{ link.url }}">{{ link.title }}</a>
+      {%- endfor -%}
+    </div>
+    <div class="sv-footer-social">
+      {%- for block in section.blocks -%}
+        {%- if block.settings.url != blank -%}
+          <a href="{{ block.settings.url }}" aria-label="{{ block.settings.platform }}" {{ block.shopify_attributes }}>
+            {% render 'sv-icons', icon: block.settings.platform %}
+          </a>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Footer",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo"
+    },
+    {
+      "type": "textarea",
+      "id": "tagline",
+      "label": "Tagline",
+      "default": "Footwear built for people who move. Designed in-house, shipped from Manila, worn everywhere."
+    },
+    {
+      "type": "text",
+      "id": "shop_heading",
+      "label": "Shop column heading",
+      "default": "Shop"
+    },
+    {
+      "type": "link_list",
+      "id": "shop_menu",
+      "label": "Shop menu"
+    },
+    {
+      "type": "text",
+      "id": "company_heading",
+      "label": "Company column heading",
+      "default": "Company"
+    },
+    {
+      "type": "link_list",
+      "id": "company_menu",
+      "label": "Company menu"
+    },
+    {
+      "type": "link_list",
+      "id": "legal_menu",
+      "label": "Legal links"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_heading",
+      "label": "Newsletter heading",
+      "default": "Stay in the loop"
+    },
+    {
+      "type": "textarea",
+      "id": "newsletter_text",
+      "label": "Newsletter text",
+      "default": "New drops and restocks, straight to your inbox. No spam."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "social_link",
+      "name": "Social link",
+      "settings": [
+        {
+          "type": "select",
+          "id": "platform",
+          "label": "Platform",
+          "options": [
+            { "value": "instagram", "label": "Instagram" },
+            { "value": "x", "label": "X" },
+            { "value": "tiktok", "label": "TikTok" },
+            { "value": "facebook", "label": "Facebook" },
+            { "value": "youtube", "label": "YouTube" }
+          ],
+          "default": "instagram"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "URL"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Footer",
+      "blocks": [
+        { "type": "social_link", "settings": { "platform": "instagram" } },
+        { "type": "social_link", "settings": { "platform": "x" } },
+        { "type": "social_link", "settings": { "platform": "tiktok" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

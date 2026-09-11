@@ -1,8 +1,102 @@
-<div class="sv-drawer-overlay" data-sv-overlay></div>
-<aside class="sv-drawer" data-sv-drawer data-shipping-threshold="{{ threshold | default: 1200 }}" data-currency="{{ shop.currency }}" aria-label="Shopping cart">
-  <div class="sv-drawer-head"><h2>Your Bag <span data-sv-drawer-count>({{ cart.item_count }})</span></h2><button class="sv-drawer-close" type="button" data-sv-cart-close aria-label="Close cart">{% render 'sv-icons', icon: 'close' %}</button></div>
-  <div class="sv-ship-progress"><div class="sv-ship-msg" data-sv-ship-message></div><div class="sv-ship-track"><div class="sv-ship-fill" data-sv-ship-fill></div></div></div>
-  <div class="sv-drawer-items" data-sv-items></div>
-  <template data-sv-empty-template><div class="sv-drawer-empty"><p>Your bag is empty</p><a href="{{ routes.all_products_collection_url }}">Continue shopping</a></div></template>
-  <div class="sv-drawer-foot"><div class="sv-subtotal-row"><span class="sv-label">Subtotal</span><span class="sv-amount" data-sv-subtotal>{{ cart.total_price | money }}</span></div><a class="sv-checkout-btn" href="{{ routes.checkout_url }}">Proceed to Checkout</a></div>
+<div class="sv-drawer-overlay" data-sv-overlay id="svDrawerOverlay"></div>
+<aside
+  class="sv-drawer"
+  id="svDrawer"
+  data-sv-drawer
+  data-shipping-threshold="{{ threshold | default: 1200 }}"
+  data-money-format="{{ shop.money_format | escape }}"
+  data-checkout-url="{{ routes.checkout_url }}"
+  aria-label="Shopping cart"
+>
+  <div class="sv-drawer-head">
+    <h2>Your Bag <span id="svDrawerCount" data-sv-drawer-count>({{ cart.item_count }})</span></h2>
+    <button class="sv-drawer-close" id="svDrawerClose" type="button" data-sv-cart-close aria-label="Close cart">
+      {% render 'sv-icons', icon: 'close' %}
+    </button>
+  </div>
+
+  <div class="sv-ship-progress" id="svShipProgress">
+    <div class="sv-ship-msg" id="svShipMsg" data-sv-ship-message>
+      {%- assign remaining = threshold | times: 100 | minus: cart.total_price -%}
+      {%- if remaining <= 0 -%}
+        You've unlocked <strong>Free Express Shipping</strong>
+      {%- else -%}
+        Add <span class="sv-amt">{{ remaining | money }}</span> more for Free Express Shipping
+      {%- endif -%}
+    </div>
+    <div class="sv-ship-track">
+      <div class="sv-ship-fill" id="svShipFill" data-sv-ship-fill></div>
+    </div>
+  </div>
+
+  <div class="sv-drawer-items" id="svDrawerItems" data-sv-items>
+    {%- if cart.item_count == 0 -%}
+      <div class="sv-drawer-empty">
+        {% render 'sv-icons', icon: 'bag-empty' %}
+        <p>Your bag is empty</p>
+        <a href="{{ routes.root_url }}#shop" data-sv-empty-browse>Continue shopping</a>
+      </div>
+    {%- else -%}
+      {%- for item in cart.items -%}
+        <div class="sv-line-item" data-line-key="{{ item.key }}">
+          <div class="sv-item-thumb">
+            {%- if item.image -%}
+              <img
+                src="{{ item.image | image_url: width: 160 }}"
+                alt="{{ item.image.alt | default: item.product.title | escape }}"
+                width="76"
+                height="76"
+              >
+            {%- else -%}
+              {% render 'sv-icons', icon: 'placeholder-shoe' %}
+            {%- endif -%}
+          </div>
+          <div class="sv-item-info">
+            <h3>{{ item.product.title }}</h3>
+            <div class="sv-item-variant">
+              {%- unless item.product.has_only_default_variant -%}
+                {{ item.variant.title }}
+              {%- endunless -%}
+            </div>
+            <div class="sv-qty-stepper">
+              <button type="button" class="sv-qty-minus" data-sv-qty="-1" aria-label="Decrease quantity">−</button>
+              <span>{{ item.quantity }}</span>
+              <button type="button" class="sv-qty-plus" data-sv-qty="1" aria-label="Increase quantity">+</button>
+            </div>
+          </div>
+          <div class="sv-item-right">
+            <div class="sv-item-price">{{ item.final_line_price | money }}</div>
+            <button type="button" class="sv-item-remove" data-sv-remove>Remove</button>
+          </div>
+        </div>
+      {%- endfor -%}
+    {%- endif -%}
+  </div>
+
+  <template data-sv-empty-template>
+    <div class="sv-drawer-empty">
+      {% render 'sv-icons', icon: 'bag-empty' %}
+      <p>Your bag is empty</p>
+      <a href="{{ routes.root_url }}#shop" data-sv-empty-browse>Continue shopping</a>
+    </div>
+  </template>
+
+  <div class="sv-drawer-foot" id="svDrawerFoot">
+    <div class="sv-subtotal-row">
+      <span class="sv-label">Subtotal</span>
+      <span class="sv-amount" id="svSubtotal" data-sv-subtotal>{{ cart.total_price | money }}</span>
+    </div>
+    <a
+      class="sv-checkout-btn"
+      id="svCheckoutBtn"
+      data-sv-checkout
+      {% if cart.item_count == 0 %}
+        aria-disabled="true"
+      {% else %}
+        href="{{ routes.checkout_url }}"
+      {% endif %}
+    >
+      Proceed to Checkout
+    </a>
+  </div>
 </aside>

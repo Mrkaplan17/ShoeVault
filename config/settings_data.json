@@ -1,12 +1,12 @@
-/*
- * ------------------------------------------------------------
- * IMPORTANT: The contents of this file are auto-generated.
- *
- * This file may be updated by the Shopify admin theme editor
- * or related systems. Please exercise caution as any changes
- * made to this file may be overwritten.
- * ------------------------------------------------------------
- */
 {
-  "current": {}
+  "current": {
+    "sv_ink": "#0E0E10",
+    "sv_fog": "#F5F4F2",
+    "sv_hairline": "#E4E2DD",
+    "sv_slate": "#8A8782",
+    "sv_signal": "#FF4D2E",
+    "type_primary_font": "archivo_n4",
+    "background_color": "#FFFFFF",
+    "foreground_color": "#0E0E10"
+  }
 }

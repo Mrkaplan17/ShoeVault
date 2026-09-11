@@ -1,2 +1,111 @@
-<section class="sv-trust">{% for block in section.blocks %}<div class="sv-trust-item" {{ block.shopify_attributes }}>{% if block.settings.icon %}<div class="sv-trust-icon"><img src="{{ block.settings.icon | image_url: width: 88 }}" alt="" width="44" height="44"></div>{% endif %}<div class="sv-trust-text"><h3>{{ block.settings.heading }}</h3><p>{{ block.settings.text }}</p></div></div>{% endfor %}</section>
-{% schema %}{"name":"SoleVault trust badges","max_blocks":4,"blocks":[{"type":"badge","name":"Badge","settings":[{"type":"image_picker","id":"icon","label":"Icon"},{"type":"text","id":"heading","label":"Heading","default":"Express Shipping"},{"type":"text","id":"text","label":"Text","default":"Delivered within 24 hours on all express orders"}]}],"presets":[{"name":"SoleVault trust badges","blocks":[{"type":"badge"},{"type":"badge","settings":{"heading":"Authentic Guarantee","text":"Every pair verified and sealed before it ships"}},{"type":"badge","settings":{"heading":"Easy Returns","text":"30 days to send it back, no questions asked"}}]}]}{% endschema %}
+{% style %}
+  #shopify-section-{{ section.id }} .sv-trust {
+    grid-template-columns: repeat({{ section.blocks.size | at_least: 1 }}, 1fr);
+  }
+  @media (max-width: 860px) {
+    #shopify-section-{{ section.id }} .sv-trust {
+      grid-template-columns: 1fr;
+    }
+  }
+{% endstyle %}
+
+<section class="sv-trust">
+  {%- for block in section.blocks -%}
+    <div class="sv-trust-item" {{ block.shopify_attributes }}>
+      <div class="sv-trust-icon">
+        {%- if block.settings.icon_image != blank -%}
+          <img
+            src="{{ block.settings.icon_image | image_url: width: 88 }}"
+            alt=""
+            width="22"
+            height="22"
+          >
+        {%- else -%}
+          {% render 'sv-icons', icon: block.settings.icon %}
+        {%- endif -%}
+      </div>
+      <div class="sv-trust-text">
+        <h3>{{ block.settings.heading }}</h3>
+        <p>{{ block.settings.text }}</p>
+      </div>
+    </div>
+  {%- endfor -%}
+</section>
+
+{% schema %}
+{
+  "name": "Trust badges",
+  "tag": "section",
+  "class": "sv-trust-section",
+  "max_blocks": 6,
+  "settings": [],
+  "blocks": [
+    {
+      "type": "badge",
+      "name": "Badge",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            { "value": "truck", "label": "Shipping" },
+            { "value": "shield", "label": "Guarantee" },
+            { "value": "returns", "label": "Returns" }
+          ],
+          "default": "truck"
+        },
+        {
+          "type": "image_picker",
+          "id": "icon_image",
+          "label": "Custom icon",
+          "info": "Optional. Replaces the preset SVG when set."
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Express Shipping"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "Delivered within 24 hours on all express orders"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Trust badges",
+      "blocks": [
+        {
+          "type": "badge",
+          "settings": {
+            "icon": "truck",
+            "heading": "Express Shipping",
+            "text": "Delivered within 24 hours on all express orders"
+          }
+        },
+        {
+          "type": "badge",
+          "settings": {
+            "icon": "shield",
+            "heading": "Authentic Guarantee",
+            "text": "Every pair verified and sealed before it ships"
+          }
+        },
+        {
+          "type": "badge",
+          "settings": {
+            "icon": "returns",
+            "heading": "Easy Returns",
+            "text": "30 days to send it back, no questions asked"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

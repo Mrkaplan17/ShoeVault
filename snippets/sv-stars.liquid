@@ -1,0 +1,12 @@
+{%- liquid
+  assign rating_value = rating | default: 5 | plus: 0
+-%}
+<span class="sv-stars" aria-hidden="true">
+  {%- for i in (1..5) -%}
+    {%- if i <= rating_value -%}
+      {% render 'sv-icons', icon: 'star' %}
+    {%- else -%}
+      {% render 'sv-icons', icon: 'star-empty' %}
+    {%- endif -%}
+  {%- endfor -%}
+</span>

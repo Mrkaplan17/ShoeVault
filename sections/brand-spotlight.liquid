@@ -1,2 +1,117 @@
-<section class="sv-spotlight"><div class="sv-spotlight-visual">{% if section.settings.image %}<img src="{{ section.settings.image | image_url: width: 900 }}" alt="{{ section.settings.image.alt | escape }}" width="900" height="700" loading="lazy">{% endif %}</div><div class="sv-spotlight-content"><h2>{{ section.settings.heading }}</h2><div class="sv-spotlight-copy">{{ section.settings.body }}</div><div class="sv-spec-list">{% for block in section.blocks %}<div class="sv-spec-row" {{ block.shopify_attributes }}><span class="sv-spec-label">{{ block.settings.label }}</span><span class="sv-spec-value{% if block.settings.highlight %} is-signal{% endif %}">{{ block.settings.value }}</span></div>{% endfor %}</div>{% if section.settings.cta_text != blank %}<a class="sv-spotlight-cta" href="{{ section.settings.cta_url }}">{{ section.settings.cta_text }}</a>{% endif %}</div></section>
-{% schema %}{"name":"SoleVault brand spotlight","blocks":[{"type":"spec","name":"Spec","settings":[{"type":"text","id":"label","label":"Label","default":"Energy return"},{"type":"text","id":"value","label":"Value","default":"73%"},{"type":"checkbox","id":"highlight","label":"Highlight","default":false}]}],"settings":[{"type":"text","id":"heading","label":"Heading","default":"Meet VaultFoam."},{"type":"richtext","id":"body","label":"Body","default":"<p>A dual-density compound engineered to compress under heel strike and rebound through toe-off, built into every SoleVault midsole since 2022.</p>"},{"type":"image_picker","id":"image","label":"Spotlight image"},{"type":"text","id":"cta_text","label":"CTA text","default":"Explore the technology"},{"type":"url","id":"cta_url","label":"CTA URL"}],"presets":[{"name":"SoleVault brand spotlight","blocks":[{"type":"spec"},{"type":"spec","settings":{"label":"Weight per midsole","value":"98g"}},{"type":"spec","settings":{"label":"Compression set, 500 mi","value":"Under 4%"}}]}]}{% endschema %}
+<section class="sv-spotlight">
+  <div class="sv-spotlight-visual">
+    {%- if section.settings.image != blank -%}
+      <img
+        src="{{ section.settings.image | image_url: width: 1200 }}"
+        alt="{{ section.settings.image.alt | default: section.settings.heading | escape }}"
+        width="{{ section.settings.image.width }}"
+        height="{{ section.settings.image.height }}"
+        loading="lazy"
+      >
+    {%- else -%}
+      <svg viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M40 220c0-20 15-32 40-34l260-14c22-1 40 10 40 26v10c0 16-16 28-38 28H78c-22 0-38-8-38-16z" stroke="white" stroke-opacity="0.85" stroke-width="2"/>
+        <path d="M40 220c60 8 260 8 340-2" stroke="#FF4D2E" stroke-width="2.5" stroke-linecap="round"/>
+        <path d="M60 186c0-10 10-16 25-16h190c18 0 32 8 35 18" stroke="white" stroke-opacity="0.5" stroke-width="1.5"/>
+        <path d="M70 172c50-30 200-34 260-6" stroke="white" stroke-opacity="0.3" stroke-width="1.5"/>
+        <circle cx="120" cy="200" r="3" fill="#FF4D2E"/>
+        <circle cx="200" cy="196" r="3" fill="#FF4D2E"/>
+        <circle cx="280" cy="200" r="3" fill="#FF4D2E"/>
+      </svg>
+    {%- endif -%}
+  </div>
+
+  <div class="sv-spotlight-content">
+    <h2>{{ section.settings.heading }}</h2>
+    <div class="sv-spotlight-copy">{{ section.settings.body }}</div>
+
+    {%- if section.blocks.size > 0 -%}
+      <div class="sv-spec-list">
+        {%- for block in section.blocks -%}
+          <div class="sv-spec-row" {{ block.shopify_attributes }}>
+            <span class="sv-spec-label">{{ block.settings.label }}</span>
+            <span class="sv-spec-value{% if block.settings.highlight %} is-signal{% endif %}">{{ block.settings.value }}</span>
+          </div>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+    {%- if section.settings.cta_text != blank -%}
+      <a class="sv-spotlight-cta" href="{{ section.settings.cta_url | default: '#' }}">{{ section.settings.cta_text }}</a>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Brand spotlight",
+  "tag": "section",
+  "class": "sv-spotlight-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Meet VaultFoam."
+    },
+    {
+      "type": "richtext",
+      "id": "body",
+      "label": "Body",
+      "default": "<p>A dual-density compound engineered to compress under heel strike and rebound through toe-off, built into every SoleVault midsole since 2022. It's the difference you feel by mile three.</p>"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Cross-section image"
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "CTA text",
+      "default": "Explore the technology"
+    },
+    {
+      "type": "url",
+      "id": "cta_url",
+      "label": "CTA link"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "spec",
+      "name": "Spec",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "Energy return"
+        },
+        {
+          "type": "text",
+          "id": "value",
+          "label": "Value",
+          "default": "73%"
+        },
+        {
+          "type": "checkbox",
+          "id": "highlight",
+          "label": "Highlight in signal color",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Brand spotlight",
+      "blocks": [
+        { "type": "spec", "settings": { "label": "Energy return", "value": "73%", "highlight": true } },
+        { "type": "spec", "settings": { "label": "Weight per midsole", "value": "98g", "highlight": false } },
+        { "type": "spec", "settings": { "label": "Compression set, 500 mi", "value": "Under 4%", "highlight": false } }
+      ]
+    }
+  ]
+}
+{% endschema %}

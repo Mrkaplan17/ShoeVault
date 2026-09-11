@@ -1,2 +1,184 @@
-<section class="sv-hero"><div class="sv-hero-content"><p class="sv-hero-eyebrow">{{ section.settings.eyebrow }}</p><h1>{{ section.settings.headline }}</h1><div class="sv-hero-sub">{{ section.settings.subheading }}</div><div class="sv-hero-ctas">{% if section.settings.primary_text != blank %}<a class="sv-btn sv-btn-primary" href="{{ section.settings.primary_url }}">{{ section.settings.primary_text }}</a>{% endif %}{% if section.settings.secondary_text != blank %}<a class="sv-btn sv-btn-secondary" href="{{ section.settings.secondary_url }}">{{ section.settings.secondary_text }}</a>{% endif %}</div><div class="sv-hero-meta">{% for block in section.blocks %}<div {{ block.shopify_attributes }}><h4>{{ block.settings.number }}</h4><p>{{ block.settings.label }}</p></div>{% endfor %}</div></div><div class="sv-hero-visual">{% if section.settings.image %}<img src="{{ section.settings.image | image_url: width: 1200 }}" alt="{{ section.settings.image.alt | escape }}" width="1200" height="900">{% endif %}{% if section.settings.product %}{% assign tag_product = section.settings.product %}<div class="sv-hero-tag"><span class="sv-hero-tag-dot"></span><div><p class="sv-tag-title">{{ tag_product.title }}</p><p class="sv-tag-sub">{{ tag_product.price | money }}{% if tag_product.available %}, available{% else %}, sold out{% endif %}</p></div></div>{% endif %}</div></section>
-{% schema %}{"name":"SoleVault hero drop","blocks":[{"type":"stat","name":"Stat","settings":[{"type":"text","id":"number","label":"Number","default":"40+"},{"type":"text","id":"label","label":"Label","default":"New styles this drop"}]}],"settings":[{"type":"text","id":"eyebrow","label":"Eyebrow","default":"FW26 Collection"},{"type":"text","id":"headline","label":"Headline","default":"The Vault Drop is live."},{"type":"richtext","id":"subheading","label":"Subheading","default":"<p>Forty new silhouettes, built from the ground up for pavement, not podiums. Limited runs, gone by Sunday.</p>"},{"type":"text","id":"primary_text","label":"Primary CTA","default":"Shop the Drop"},{"type":"url","id":"primary_url","label":"Primary URL"},{"type":"text","id":"secondary_text","label":"Secondary CTA","default":"View Lookbook"},{"type":"url","id":"secondary_url","label":"Secondary URL"},{"type":"image_picker","id":"image","label":"Hero image"},{"type":"product","id":"product","label":"Availability tag product"}],"presets":[{"name":"SoleVault hero drop","blocks":[{"type":"stat"},{"type":"stat","settings":{"number":"24h","label":"Express delivery"}},{"type":"stat","settings":{"number":"100%","label":"Authenticity guaranteed"}}]}]}{% endschema %}
+<section class="sv-hero">
+  <div class="sv-hero-content">
+    {%- if section.settings.eyebrow != blank -%}
+      <p class="sv-hero-eyebrow">{{ section.settings.eyebrow }}</p>
+    {%- endif -%}
+    <h1>{{ section.settings.headline }}</h1>
+    {%- if section.settings.subheading != blank -%}
+      <div class="sv-hero-sub">{{ section.settings.subheading }}</div>
+    {%- endif -%}
+    <div class="sv-hero-ctas">
+      {%- if section.settings.primary_text != blank -%}
+        <a class="sv-btn sv-btn-primary" href="{{ section.settings.primary_url | default: '#shop' }}">
+          {{ section.settings.primary_text }}
+        </a>
+      {%- endif -%}
+      {%- if section.settings.secondary_text != blank -%}
+        <a class="sv-btn sv-btn-secondary" href="{{ section.settings.secondary_url | default: '#' }}">
+          {{ section.settings.secondary_text }}
+        </a>
+      {%- endif -%}
+    </div>
+    {%- if section.blocks.size > 0 -%}
+      <div class="sv-hero-meta">
+        {%- for block in section.blocks -%}
+          <div {{ block.shopify_attributes }}>
+            <h4>{{ block.settings.number }}</h4>
+            <p>{{ block.settings.label }}</p>
+          </div>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+
+  <div class="sv-hero-visual">
+    {%- if section.settings.image != blank -%}
+      <img
+        src="{{ section.settings.image | image_url: width: 1600 }}"
+        alt="{{ section.settings.image.alt | default: section.settings.headline | escape }}"
+        width="{{ section.settings.image.width }}"
+        height="{{ section.settings.image.height }}"
+      >
+    {%- else -%}
+      <svg viewBox="0 0 400 220" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M20 150c10-30 30-55 65-70 20-8 35-25 55-30 15-4 25 5 30 18 8 20 25 28 48 30 25 2 55 10 70 28 10 12 12 28 4 38-10 12-30 16-52 16H50c-20 0-35-10-35-25 0-2 2-4 5-5z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/>
+        <path d="M85 118c15-6 30-9 48-8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        <path d="M150 108c12 2 22 8 28 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        <path d="M20 150c60 6 180 6 260-4" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+      </svg>
+    {%- endif -%}
+
+    {%- liquid
+      assign tag_product = section.settings.product
+      assign tag_title = section.settings.tag_fallback_title
+      assign tag_sub = section.settings.tag_fallback_sub
+      if tag_product != blank
+        assign tag_title = tag_product.title
+        assign available_count = 0
+        for variant in tag_product.variants
+          if variant.available
+            assign available_count = available_count | plus: 1
+          endif
+        endfor
+        if available_count > 0
+          assign tag_sub = tag_product.price | money | append: ', ' | append: available_count | append: ' sizes left'
+        else
+          assign tag_sub = tag_product.price | money | append: ', sold out'
+        endif
+      endif
+    -%}
+    {%- if tag_title != blank -%}
+      <div class="sv-hero-tag">
+        <span class="sv-hero-tag-dot"></span>
+        <div>
+          <p class="sv-tag-title">{{ tag_title }}</p>
+          <p class="sv-tag-sub">{{ tag_sub }}</p>
+        </div>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Hero drop",
+  "tag": "section",
+  "class": "sv-hero-section",
+  "max_blocks": 4,
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "FW26 Collection"
+    },
+    {
+      "type": "text",
+      "id": "headline",
+      "label": "Headline",
+      "default": "The Vault Drop is live."
+    },
+    {
+      "type": "richtext",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "<p>Forty new silhouettes, built from the ground up for pavement, not podiums. Limited runs, gone by Sunday.</p>"
+    },
+    {
+      "type": "text",
+      "id": "primary_text",
+      "label": "Primary button text",
+      "default": "Shop the Drop"
+    },
+    {
+      "type": "url",
+      "id": "primary_url",
+      "label": "Primary button link"
+    },
+    {
+      "type": "text",
+      "id": "secondary_text",
+      "label": "Secondary button text",
+      "default": "View Lookbook"
+    },
+    {
+      "type": "url",
+      "id": "secondary_url",
+      "label": "Secondary button link"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Hero image"
+    },
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Availability tag product"
+    },
+    {
+      "type": "text",
+      "id": "tag_fallback_title",
+      "label": "Fallback tag title",
+      "default": "Vault Runner 02"
+    },
+    {
+      "type": "text",
+      "id": "tag_fallback_sub",
+      "label": "Fallback tag subtitle",
+      "default": "₱850, 6 sizes left",
+      "info": "Used only when no product is selected. Replace after catalog is live."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "stat",
+      "name": "Stat",
+      "settings": [
+        {
+          "type": "text",
+          "id": "number",
+          "label": "Number",
+          "default": "40+"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "New styles this drop"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero drop",
+      "blocks": [
+        { "type": "stat", "settings": { "number": "40+", "label": "New styles this drop" } },
+        { "type": "stat", "settings": { "number": "24h", "label": "Express delivery" } },
+        { "type": "stat", "settings": { "number": "100%", "label": "Authenticity guaranteed" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

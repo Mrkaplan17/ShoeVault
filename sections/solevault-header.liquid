@@ -1,2 +1,103 @@
-<header class="sv-header"><a class="sv-logo" href="{{ routes.root_url }}">SOLE<span>VAULT</span></a><nav class="sv-nav" aria-label="Main navigation">{% for link in section.settings.menu.links %}<a href="{{ link.url }}">{{ link.title }}</a>{% endfor %}</nav><div class="sv-utils"><button class="sv-icon-btn sv-search-toggle" type="button" data-sv-search-open aria-label="Search">{% render 'sv-icons', icon: 'search' %}</button><a class="sv-icon-btn" href="{{ routes.account_url }}" aria-label="Account">{% render 'sv-icons', icon: 'account' %}</a><button class="sv-cart-btn" type="button" data-sv-cart-open aria-label="Open cart">{% render 'sv-icons', icon: 'cart' %}<span>Cart</span><span class="sv-badge{% if cart.item_count == 0 %} is-empty{% endif %}" data-sv-cart-count>{{ cart.item_count }}</span></button></div></header><div class="sv-search-overlay" data-sv-search><div class="sv-search-panel"><form class="sv-search-inner" action="{{ routes.search_url }}" method="get"><input name="q" type="search" placeholder="Search shoes, styles, drops..." aria-label="Search"><button class="sv-search-close" type="button" data-sv-search-close aria-label="Close search">{% render 'sv-icons', icon: 'close' %}</button></form></div></div>{% render 'sv-cart-drawer', threshold: section.settings.free_shipping_threshold %}<script defer src="{{ 'cart.js' | asset_url }}"></script>
-{% schema %}{"name":"SoleVault header","settings":[{"type":"link_list","id":"menu","label":"Main menu","default":"main-menu"},{"type":"number","id":"free_shipping_threshold","label":"Free shipping threshold","default":1200}]}{% endschema %}
+<header class="sv-header">
+  <a class="sv-logo" href="{{ routes.root_url }}">
+    {%- if section.settings.logo != blank -%}
+      <img
+        src="{{ section.settings.logo | image_url: width: 360 }}"
+        alt="{{ shop.name | escape }}"
+        width="{{ section.settings.logo.width }}"
+        height="{{ section.settings.logo.height }}"
+      >
+    {%- else -%}
+      SOLE<span>VAULT</span>
+    {%- endif -%}
+  </a>
+
+  <nav class="sv-nav" aria-label="Main navigation">
+    {%- for link in section.settings.menu.links -%}
+      <a href="{{ link.url }}" {% if link.active %}aria-current="page"{% endif %}>{{ link.title }}</a>
+    {%- endfor -%}
+  </nav>
+
+  <div class="sv-utils">
+    <button class="sv-mobile-toggle" type="button" aria-label="Open menu">
+      {% render 'sv-icons', icon: 'menu' %}
+    </button>
+
+    <button class="sv-icon-btn sv-search-toggle" id="svSearchToggle" type="button" data-sv-search-open aria-label="Search">
+      {% render 'sv-icons', icon: 'search' %}
+    </button>
+
+    <button class="sv-icon-btn" id="svWishlistToggle" type="button" data-sv-wishlist-toggle aria-label="Wishlist">
+      {% render 'sv-icons', icon: 'heart' %}
+      <span class="sv-badge is-empty" id="svWishBadge" data-sv-wish-badge>0</span>
+    </button>
+
+    <a
+      class="sv-icon-btn"
+      href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}"
+      aria-label="Account"
+    >
+      {% render 'sv-icons', icon: 'account' %}
+    </a>
+
+    <button class="sv-cart-btn" id="svCartOpen" type="button" data-sv-cart-open>
+      {% render 'sv-icons', icon: 'cart' %}
+      <span id="svCartLabel">Cart</span>
+      <span
+        class="sv-badge{% if cart.item_count == 0 %} is-empty{% endif %}"
+        id="svCartBadge"
+        data-sv-cart-count
+        style="position:static; margin-left:2px;"
+      >
+        {{ cart.item_count }}
+      </span>
+    </button>
+  </div>
+</header>
+
+<div class="sv-search-overlay" id="svSearchOverlay" data-sv-search>
+  <div class="sv-search-panel">
+    <form class="sv-search-inner" action="{{ routes.search_url }}" method="get" role="search">
+      {% render 'sv-icons', icon: 'search' %}
+      <input
+        type="search"
+        name="q"
+        placeholder="Search shoes, styles, drops..."
+        id="svSearchInput"
+        aria-label="Search"
+      >
+      <input type="hidden" name="type" value="product">
+      <button class="sv-search-close" id="svSearchClose" type="button" data-sv-search-close aria-label="Close search">
+        {% render 'sv-icons', icon: 'close' %}
+      </button>
+    </form>
+  </div>
+</div>
+
+{% render 'sv-cart-drawer', threshold: section.settings.sv_free_shipping_threshold %}
+
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Main menu",
+      "default": "main-menu"
+    },
+    {
+      "type": "number",
+      "id": "sv_free_shipping_threshold",
+      "label": "Free shipping threshold",
+      "default": 1200,
+      "info": "Store currency units (for ₱1,200 enter 1200). Compared against cart total."
+    }
+  ]
+}
+{% endschema %}

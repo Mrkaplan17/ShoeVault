@@ -1,11 +1,105 @@
-<article class="sv-card">
+{%- liquid
+  assign variant = product.selected_or_first_available_variant
+  assign threshold = low_stock_threshold | default: 6
+  assign show_low_stock = false
+  if variant.inventory_management != blank and variant.inventory_quantity > 0 and variant.inventory_quantity <= threshold
+    assign show_low_stock = true
+  endif
+
+  assign size_option_index = nil
+  for option in product.options
+    assign option_handle = option | downcase
+    if option_handle == 'size' or option_handle contains 'size'
+      assign size_option_index = forloop.index0
+    endif
+  endfor
+
+  assign color_label = ''
+  for option in product.options_with_values
+    assign option_handle = option.name | downcase
+    unless option_handle == 'size' or option_handle contains 'size'
+      assign color_label = option.values.first
+      break
+    endunless
+  endfor
+  if color_label == blank
+    assign color_label = product.type
+  endif
+-%}
+
+<article class="sv-card" data-product-id="{{ product.id }}">
   <div class="sv-card-media">
-    {% assign variant = product.selected_or_first_available_variant %}
-    {% if variant.inventory_management and variant.inventory_quantity <= section.settings.low_stock_threshold and variant.inventory_quantity > 0 %}<span class="sv-card-stock is-low">{{ variant.inventory_quantity }} left</span>{% endif %}
-    <button class="sv-card-wish" type="button" data-wishlist-app-hook data-product-id="{{ product.id }}" aria-label="Add {{ product.title | escape }} to wishlist">{% render 'sv-icons', icon: 'heart' %}</button>
-    {% if product.featured_image %}<img src="{{ product.featured_image | image_url: width: 600 }}" alt="{{ product.featured_image.alt | default: product.title | escape }}" loading="lazy" width="600" height="600">{% endif %}
+    {%- if show_low_stock -%}
+      <span class="sv-card-stock is-low">{{ variant.inventory_quantity }} left</span>
+    {%- endif -%}
+
+    <button
+      class="sv-card-wish"
+      type="button"
+      data-sv-wish="{{ product.id }}"
+      aria-label="Add {{ product.title | escape }} to wishlist"
+    >
+      {% render 'sv-icons', icon: 'heart' %}
+    </button>
+
+    {%- if product.featured_image -%}
+      <img
+        src="{{ product.featured_image | image_url: width: 600 }}"
+        alt="{{ product.featured_image.alt | default: product.title | escape }}"
+        width="600"
+        height="600"
+        loading="lazy"
+      >
+    {%- else -%}
+      {% render 'sv-icons', icon: 'placeholder-shoe' %}
+    {%- endif -%}
+
     <button class="sv-card-quickadd-btn" type="button">Quick Add</button>
-    <div class="sv-quickadd-panel"><div class="sv-quickadd-panel-head"><span>Select size</span><button class="sv-quickadd-close" type="button" aria-label="Close size selector">{% render 'sv-icons', icon: 'close' %}</button></div><div class="sv-size-row">{% for option in product.options_with_values %}{% if option.name contains 'Size' %}{% for value in option.values %}{% for product_variant in product.variants %}{% if product_variant.options contains value and product_variant.available %}<button class="sv-size-chip" type="button" data-sv-add data-variant-id="{{ product_variant.id }}">{{ value }}</button>{% break %}{% endif %}{% endfor %}{% endfor %}{% endif %}{% endfor %}</div></div>
+
+    <div class="sv-quickadd-panel">
+      <div class="sv-quickadd-panel-head">
+        <span>Select size</span>
+        <button class="sv-quickadd-close" type="button" aria-label="Close size selector">
+          {% render 'sv-icons', icon: 'close' %}
+        </button>
+      </div>
+      <div class="sv-size-row">
+        {%- assign shown_sizes = '|' -%}
+        {%- for product_variant in product.variants -%}
+          {%- if size_option_index == 0 -%}
+            {%- assign chip_label = product_variant.option1 -%}
+          {%- elsif size_option_index == 1 -%}
+            {%- assign chip_label = product_variant.option2 -%}
+          {%- elsif size_option_index == 2 -%}
+            {%- assign chip_label = product_variant.option3 -%}
+          {%- else -%}
+            {%- assign chip_label = product_variant.title -%}
+          {%- endif -%}
+          {%- assign chip_key = '|' | append: chip_label | append: '|' -%}
+          {%- unless shown_sizes contains chip_key -%}
+            {%- assign shown_sizes = shown_sizes | append: chip_label | append: '|' -%}
+            <button
+              class="sv-size-chip"
+              type="button"
+              data-sv-add
+              data-variant-id="{{ product_variant.id }}"
+              {% unless product_variant.available %}disabled{% endunless %}
+            >
+              {{ chip_label }}
+            </button>
+          {%- endunless -%}
+        {%- endfor -%}
+      </div>
+    </div>
   </div>
-  <div class="sv-card-body"><h3>{{ product.title }}</h3><p class="sv-card-tag">{{ product.vendor }}</p><p class="sv-card-price">{{ product.price | money }}</p></div>
+
+  <div class="sv-card-body">
+    <h3>
+      <a href="{{ product.url }}">{{ product.title }}</a>
+    </h3>
+    {%- if color_label != blank -%}
+      <p class="sv-card-tag">{{ color_label }}</p>
+    {%- endif -%}
+    <p class="sv-card-price">{{ product.price | money }}</p>
+  </div>
 </article>

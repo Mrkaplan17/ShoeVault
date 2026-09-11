@@ -1,0 +1,35 @@
+{%- if section.settings.show_announcement -%}
+  <div class="sv-announce" id="svAnnounce">
+    <span>{{ section.settings.message }}</span>
+    <button class="sv-announce-close" id="svAnnounceClose" type="button" data-sv-announcement-close aria-label="Dismiss announcement">
+      {% render 'sv-icons', icon: 'close' %}
+    </button>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Announcement bar",
+  "tag": "section",
+  "class": "sv-announce-section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_announcement",
+      "label": "Show announcement bar",
+      "default": true
+    },
+    {
+      "type": "richtext",
+      "id": "message",
+      "label": "Message",
+      "default": "<p>Free Express Shipping on orders over <strong>₱1,200</strong> — new drops every Friday</p>"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Announcement bar"
+    }
+  ]
+}
+{% endschema %}

@@ -1,27 +1,21 @@
-/*
- * ------------------------------------------------------------
- * IMPORTANT: The contents of this file are auto-generated.
- *
- * This file may be updated by the Shopify admin theme editor
- * or related systems. Please exercise caution as any changes
- * made to this file may be overwritten.
- * ------------------------------------------------------------
- */
 {
   "type": "header",
-  "name": "t:general.header",
+  "name": "Header",
   "sections": {
     "announcement": {
-      "type": "announcement-bar-sv",
-      "settings": {}
+      "type": "announcement-bar",
+      "settings": {
+        "show_announcement": true,
+        "message": "<p>Free Express Shipping on orders over <strong>₱1,200</strong> — new drops every Friday</p>"
+      }
     },
     "header": {
       "type": "solevault-header",
-      "settings": {}
+      "settings": {
+        "menu": "main-menu",
+        "sv_free_shipping_threshold": 1200
+      }
     }
   },
-  "order": [
-    "announcement",
-    "header"
-  ]
+  "order": ["announcement", "header"]
 }

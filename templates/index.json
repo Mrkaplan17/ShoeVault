@@ -1,21 +1,134 @@
-/*
- * ------------------------------------------------------------
- * IMPORTANT: The contents of this file are auto-generated.
- *
- * This file may be updated by the Shopify admin theme editor
- * or related systems. Please exercise caution as any changes
- * made to this file may be overwritten.
- * ------------------------------------------------------------
- */
 {
   "sections": {
-    "hero": { "type": "hero-drop", "blocks": { "stat-1": { "type": "stat", "settings": { "number": "40+", "label": "New styles this drop" } }, "stat-2": { "type": "stat", "settings": { "number": "24h", "label": "Express delivery" } }, "stat-3": { "type": "stat", "settings": { "number": "100%", "label": "Authenticity guaranteed" } } }, "block_order": ["stat-1", "stat-2", "stat-3"] },
-    "trust": { "type": "trust-badges" },
-    "collection": { "type": "featured-collection" },
-    "spotlight": { "type": "brand-spotlight" },
-    "reviews": { "type": "reviews-slider" }
+    "hero": {
+      "type": "hero-drop",
+      "settings": {
+        "eyebrow": "FW26 Collection",
+        "headline": "The Vault Drop is live.",
+        "subheading": "<p>Forty new silhouettes, built from the ground up for pavement, not podiums. Limited runs, gone by Sunday.</p>",
+        "primary_text": "Shop the Drop",
+        "secondary_text": "View Lookbook",
+        "tag_fallback_title": "Vault Runner 02",
+        "tag_fallback_sub": "₱850, 6 sizes left"
+      },
+      "blocks": {
+        "stat-1": { "type": "stat", "settings": { "number": "40+", "label": "New styles this drop" } },
+        "stat-2": { "type": "stat", "settings": { "number": "24h", "label": "Express delivery" } },
+        "stat-3": { "type": "stat", "settings": { "number": "100%", "label": "Authenticity guaranteed" } }
+      },
+      "block_order": ["stat-1", "stat-2", "stat-3"]
+    },
+    "trust": {
+      "type": "trust-badges",
+      "blocks": {
+        "badge-1": {
+          "type": "badge",
+          "settings": {
+            "icon": "truck",
+            "heading": "Express Shipping",
+            "text": "Delivered within 24 hours on all express orders"
+          }
+        },
+        "badge-2": {
+          "type": "badge",
+          "settings": {
+            "icon": "shield",
+            "heading": "Authentic Guarantee",
+            "text": "Every pair verified and sealed before it ships"
+          }
+        },
+        "badge-3": {
+          "type": "badge",
+          "settings": {
+            "icon": "returns",
+            "heading": "Easy Returns",
+            "text": "30 days to send it back, no questions asked"
+          }
+        }
+      },
+      "block_order": ["badge-1", "badge-2", "badge-3"]
+    },
+    "collection": {
+      "type": "featured-collection",
+      "settings": {
+        "heading": "This week's picks",
+        "subheading": "Six styles from the Vault Drop, restocking as sizes sell out.",
+        "link_text": "View All",
+        "product_count": 6,
+        "low_stock_threshold": 6
+      }
+    },
+    "spotlight": {
+      "type": "brand-spotlight",
+      "settings": {
+        "heading": "Meet VaultFoam.",
+        "body": "<p>A dual-density compound engineered to compress under heel strike and rebound through toe-off, built into every SoleVault midsole since 2022. It's the difference you feel by mile three.</p>",
+        "cta_text": "Explore the technology"
+      },
+      "blocks": {
+        "spec-1": { "type": "spec", "settings": { "label": "Energy return", "value": "73%", "highlight": true } },
+        "spec-2": { "type": "spec", "settings": { "label": "Weight per midsole", "value": "98g", "highlight": false } },
+        "spec-3": { "type": "spec", "settings": { "label": "Compression set, 500 mi", "value": "Under 4%", "highlight": false } }
+      },
+      "block_order": ["spec-1", "spec-2", "spec-3"]
+    },
+    "reviews": {
+      "type": "reviews-slider",
+      "settings": {
+        "heading": "What runners are saying",
+        "rating": "4.8",
+        "summary_stars": 5,
+        "buyer_count": "2,300+"
+      },
+      "blocks": {
+        "review-1": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "quote": "<p>Three months in and the VaultFoam still feels like day one. My knees noticed the difference on longer runs almost immediately.</p>",
+            "author_name": "Jamie M.",
+            "author_location": "Verified buyer, Quezon City"
+          }
+        },
+        "review-2": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "quote": "<p>Ordered the Ridge Trainer on a Tuesday night, wore them Wednesday morning. The express shipping claim actually held up.</p>",
+            "author_name": "Renz C.",
+            "author_location": "Verified buyer, Naga City"
+          }
+        },
+        "review-3": {
+          "type": "review",
+          "settings": {
+            "rating": 4,
+            "quote": "<p>Sizing runs slightly narrow on the Aero Court, went up half a size and it's been perfect since. Would've liked a wide option.</p>",
+            "author_name": "Dana P.",
+            "author_location": "Verified buyer, Cebu City"
+          }
+        },
+        "review-4": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "quote": "<p>The return process for a wrong size took under five minutes and the refund landed two days later. Rare for a smaller shop.</p>",
+            "author_name": "Kevin T.",
+            "author_location": "Verified buyer, Davao City"
+          }
+        },
+        "review-5": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "quote": "<p>Been buying sneakers online for a decade and this is the first slide-out cart that's actually made me spend more time browsing.</p>",
+            "author_name": "Alex L.",
+            "author_location": "Verified buyer, Baguio City"
+          }
+        }
+      },
+      "block_order": ["review-1", "review-2", "review-3", "review-4", "review-5"]
+    }
   },
-  "order": [
-    "hero", "trust", "collection", "spotlight", "reviews"
-  ]
+  "order": ["hero", "trust", "collection", "spotlight", "reviews"]
 }
